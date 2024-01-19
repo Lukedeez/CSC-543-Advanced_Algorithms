@@ -15,7 +15,7 @@ const int MAX_SIZE = 100;
 int matrix[MAX_SIZE][MAX_SIZE] = {0};
 int sparseMatrix[MAX_SIZE][3];
 
-void displayInfo(string &assignment);
+void displayInfo(string &assignment, string &stDate);
 int rowColNum(char kind, int &val);
 int inputSparseMatrix(int rows, int cols, int count);
 void displayMatrix(int rows, int cols);
@@ -23,8 +23,9 @@ void displaySparseMatrix(int rows);
 void searchValue(int rows);
 
 int main() {
-    string assignment = "Unit 2.1 - Sparse Matrix - display a sparse matrix using an array";
-	displayInfo(assignment);  // display project information
+    string stDate = "Jan 14 2024";
+    string assignment = "Unit 2.1 - Sparse Matrix - display the values of a sparse matrix using an array";
+	displayInfo(assignment, stDate);  // display project information
 
     int rows, cols, count = 0;
 
@@ -40,26 +41,25 @@ int main() {
         if (cols == -1) 
             break;
 
-        // Input the elements of the matrix
+        // Input the elements of the matrix, return count
         count = inputSparseMatrix(rows, cols, count);
 
         // Display the original matrix
         displayMatrix(rows, cols);
 
-        // Display the sparse matrix
-        displaySparseMatrix(count);
-
         // Search for a value in the sparse matrix, displays indexes if found
         searchValue(count);
 
-        // Reset array count
+        // Display the sparse matrix
+        displaySparseMatrix(count);
+
+        // Reset array count and matrix 
         count = 0;
         memset(matrix, 0, sizeof matrix);
     } while(true);
     
     return 0;
 }
-
 
 // Row and column input values
 int rowColNum(char kind, int &val) {
@@ -97,13 +97,14 @@ int inputSparseMatrix(int rows, int cols, int count) {
     int inputSize = numCnt/2;
     int rowIndex, colIndex;
     bool check = false;
+    // get value input size based on array size
     if (!(numCnt % 2))
         inputSize--;
     cout << "\nEnter " << inputSize << " matrix values (Greater than 0)" << endl;
+    // fill array with values and zeros
     for (int x = 0; x < inputSize; x++) {
         rowIndex = rand() % rows; //generates a random number between 0 and rows
         colIndex = rand() % cols;
-        //cout << "\nEnter " << numCnt << " - " << inputSize << " - elements for the matrix " << x+1 << ": ";
         cout << "Value #" << x+1 << ": ";
         do{
             check = false;
@@ -117,10 +118,9 @@ int inputSparseMatrix(int rows, int cols, int count) {
         } while(check);
     }
     
-    //cout << "\nEnter " << numCnt << " - " << valNeed << " - elements for the matrix (separate by a space): ";
+    // fill array with sparse matrix non-zero values
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            //cin >> matrix[i][j];
             if (matrix[i][j] != 0) {
                 sparseMatrix[count][0] = i; // Row index
                 sparseMatrix[count][1] = j; // Column index
@@ -161,7 +161,7 @@ void displaySparseMatrix(int rows) {
 
 // Function to search for a value in the sparse matrix and return indices
 void searchValue(int rows) {
-    cout << "\nEnter the value to search in the sparse matrix: ";
+    cout << "\nEnter a value to search in the sparse matrix: ";
     int search = rowColNum('s', rows);
     string result = "Value "+to_string(search)+" was NOT found!";
     for (int i = 0; i < rows; ++i) {
@@ -177,10 +177,11 @@ void searchValue(int rows) {
 }
 
 // diplay project information
-void displayInfo(string &assignment)
+void displayInfo(string &assignment, string &stDate)
 {
 	cout << "****************************************\n";
 	cout << "Written by   : Lukas Myers" << endl;
+    cout << "Start Date   : " << stDate << endl;
 	cout << "Course       : CSC 543 Advanced Algorithms" << endl;
 	cout << "Instructor   : Dr. Farah Kamw" << endl;
 	cout << "Assignment   : " << assignment << endl;
